@@ -1,0 +1,91 @@
+/* Global page background */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(160deg, #dde5ec, #b8c4d3);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Phone container */
+.phone {
+  position: relative;
+  width: clamp(280px, 35vw, 380px);
+  aspect-ratio: 9 / 19.5;
+  background: #f9f9f9;
+  border-radius: 36px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Simple black notch */
+.phone__notch {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 26px;
+  background: #000;
+  border-radius: 12px;
+}
+
+/* Screen area */
+.phone__screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #f3f7f5;
+  padding-top: 50px;
+  text-align: center;
+}
+
+/* Header text */
+.header {
+  margin-top: 20px;
+}
+.header h1 {
+  font-size: 1.4rem;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
+}
+
+/* Content area */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.content p {
+  color: #555;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+/* QR image */
+.qr {
+  width: 70%;
+  max-width: 220px;
+  border-radius: 16px;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional soft reflection */
+.phone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 36px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), transparent 70%);
+  pointer-events: none;
+}
