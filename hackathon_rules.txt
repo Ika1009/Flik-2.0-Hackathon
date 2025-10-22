@@ -1,0 +1,86 @@
+🚀 Hackathon Izziv: Flik 2.0
+Kaj je Flik?
+Flik je slovenska storitev za takojšnja plačila – denar preneseš v nekaj sekundah med uporabniki različnih bank, samo s telefonsko številko ali e-pošto.
+Izziv
+Ustvarite Flik 2.0: inovativno web ali mobilno aplikacijo, ki nadgradi obstoječo storitev z novimi funkcionalnostmi, izboljšano uporabniško izkušnjo in rešitvami za trgovce.
+Kaj pričakujemo
+-	Prototip (mobile/web app).
+-	Kratek pitch + demo uporabniškega toka.
+-	Osnovna tehnična arhitektura in razlaga, kako bi rešitev delovala v praksi.
+Priporočena tehnologija (predlogi)
+-	Frontend: React, Angular, Vue,… (Web) ali Cross-platform mobile React Native, Flutter, Ionic,… (Mobile)
+-	Backend: Node.js (Express), Python (FastAPI), Golang (Gin)
+-	DB: PostgreSQL , Firebase (Firestore), Apache CouchDB , …
+-	Repo: GIT
+-	Notifications: Pusher
+-	Host: Docker, Podman
+Kaj ocenjujemo
+-	Uporabniška vrednost – rešuje realen problem.
+-	Inovativnost – novi scenariji uporabe Flika.
+-	Tehnična izvedljivost – varnost, realnost integracije.
+-	UX & dizajn – jasnost in enostavnost.
+-	Pitch & demo – predstavitev in prepričljivost.
+ 
+🏦 Hackathon Izziv: Zaznavanje goljufij v realnem času s Kafka/RabbitMQ + ML
+Opis problema
+Zasnovati sistem za zaznavanje goljufij v realnem času, ki bo s pomočjo Kafke ali kakšnega drugega queue/streaming servica pretakal ponarejene transakcije. Sistem mora:
+-	Zaznati anomalije na podlagi pravil (npr. transakcija > 10.000 €).
+-	V realnem času uporabiti model strojnega učenja, ki transakcije razvrsti kot legitimne ali goljufive.
+-	Proizvesti opozorila za sumljive transakcije in jih poslati v nadzorno ploščo ali obvestilni sistem.
+Simulacija podatkov (primer)
+-	Generirajte ponarejene transakcije v Kafka topic.
+-	Primer zapisa posamezne transakcije:
+{
+  "transaction_id": "a1c09f63-53d8-4c52-9822-16fdc5c4fbb2",
+  "timestamp": "2025-03-19T11:22:45Z",
+  "amount": 124.57,
+  "currency": "EUR",
+  "location": "SI",
+  "city": "Ljubljana",
+  "merchant": "Mercator",
+  "merchant_mcc": 5411,
+  "merchant_category": 5411,
+  "channel": "pos",
+  "terminal_id": "TID458312",
+  "device_id": "b74efb8f-3c9e-4a11-a38c-4e1a32ff69c2",
+  "card_bin": "520000",
+  "card_last4": "3948",
+  "card_masked": "520000XXXX3948",
+  "card_issuer": "Mastercard",
+  "card_expiry": "08/28",
+  "ip": "102.55.201.77",
+  "ip_country": "DE",
+  "ip_lat": 50.432175,
+  "ip_lon": 9.821304
+}
+-	Generirajte vzorce goljufij, kot so:
+o	Več transakcij v manj kot 1 minuti z različnih lokacij.
+o	Zelo veliki zneski.
+o	….
+
+Stream Processing
+-	Kafka Streams ali Flink:
+o	Zaznavanje anomalij preko pravilnih filtrov.
+o	Združevanje dejavnosti uporabnikov v časovnih oknih (npr. vsota zneskov v zadnjih 5 minutah).
+Integracija modela strojnega učenja (ML)
+-	Naučite preprost model za zaznavanje goljufij (logistična regresija, naključni gozd ali isolation forest).
+-	Možne značilnosti (features):
+o	Znesek transakcije
+o	Pogostost transakcij v zadnjih 10 minutah
+o	Razdalja med lokacijami zaporednih transakcij
+o	Čas dneva
+-	Model lahko uporabite z:
+o	Python (scikit-learn/MLflow) + Kafka consumer.
+o	Ali TensorFlow/PyTorch z API-jem za sprotne napovedi.
+Kaj ocenjujemo
+-	Uporabniška vrednost – rešuje resničen problem goljufij pri plačilih.
+-	Inovativnost – nove ideje pri uporabi Kafke ali drugega servica in strojnega učenja.
+-	Tehnična izvedljivost – realno delujoč sistem (demo)
+-	Zaznava goljufij –  različnost vzorcev, primeri , ..
+-	Pitch & demo – jasna razlaga in prepričljiv prikaz rešitve.
+
+
+Kontakt za vprašanja 
+
+Email: jaka.kejzar@bankart.si
+

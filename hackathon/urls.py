@@ -16,8 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from flik2 import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("qr_code", views.qr_code_screen)
 ]
