@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Split Bill</title>
+  <link rel="stylesheet" href="{% static 'hackathon/split.css' %}">
+</head>
+<body>
+  <div class="phone-frame">
+    <header class="top">
+      <div class="title">Skupni znesek</div>
+      <div class="total">${{ total }}</div>
+    </header>
+
+    <main class="content">
+      <div class="people-list" id="people-list">
+        <!-- starter: you (owner) -->
+        <div class="person row" data-id="you">
+          <div class="avatar">Vi</div>
+          <div class="name">Vi</div>
+          <input class="share" type="number" step="0.01" placeholder="0.00" value="0.00" />
+        </div>
+      </div>
+
+      <!-- even split + add person buttons (phone bottom corners) -->
+  <button id="even-split" class="even-btn" title="Enako razdeli" aria-label="Enako razdeli">⇄</button>
+  <button id="add-person" class="add-btn" aria-label="Dodaj osebo"><span>＋</span></button>
+    </main>
+
+    <footer class="bottom">
+      <div id="coverage-message" class="coverage" aria-live="polite"></div>
+      <button id="split-button" class="split-btn" disabled>Razdeli račun</button>
+    </footer>
+  </div>
+
+  <!-- popup -->
+  <div id="picker" class="picker hidden" role="dialog" aria-modal="true">
+    <div class="picker-card">
+      <h3>Izberi osebo</h3>
+      <ul id="contacts" class="contacts">
+        <!-- JS will populate -->
+      </ul>
+      <div class="custom">
+        <label>Po meri:</label>
+        <input id="custom-input" placeholder="Telefon ali e-pošta" />
+        <button id="add-custom" class="primary">Dodaj</button>
+      </div>
+      <button id="close-picker" class="close">Zapri</button>
+    </div>
+  </div>
+
+  <script src="{% static 'hackathon/split.js' %}"></script>
+</body>
+</html>

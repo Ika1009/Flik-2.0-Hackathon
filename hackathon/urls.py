@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('split/', views.split_bill, name='split_bill'),
+    # convenience: also allow /split.html
+    path('split.html', views.split_bill, name='split_bill_html'),
 ]

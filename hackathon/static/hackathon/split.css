@@ -1,0 +1,56 @@
+:root{
+  --bg:#f5f7fb;
+  --bg-alt:#ffffff;
+  --bg-accent:#eef2ff;
+  --text:#1b2337;
+  --muted:#5b6785;
+  --accent:#3f6bff;
+  --accent-dark:#2d4ed7;
+  --shadow:0 18px 40px rgba(26,39,80,.12);
+}
+
+*{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+body{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+.phone-frame{width:380px;max-width:96vw;background:var(--bg-alt);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.top{padding:28px 20px 18px;background:linear-gradient(180deg,var(--bg-alt),var(--bg-accent));border-bottom:1px solid #eef2ff}
+.top .title{font-size:13px;color:var(--muted)}
+.top .total{font-size:28px;font-weight:700;margin-top:6px}
+.content{padding:16px;flex:1;position:relative}
+.people-list{display:flex;flex-direction:column;gap:12px}
+.person{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,var(--bg-alt),#fbfcff);box-shadow:0 6px 18px rgba(15,23,60,.06)}
+.person .avatar{width:48px;height:48px;border-radius:12px;background:var(--bg-accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent-dark)}
+.person .name{flex:1;font-weight:700}
+.person .share{width:110px;padding:10px;border-radius:10px;border:1px solid #e7ecff;text-align:right}
+.person .remove{margin-left:8px;background:transparent;border:none;color:#9aa4bf;font-size:18px;cursor:pointer;padding:6px;border-radius:8px}
+.person .remove:hover{background:#f1f5ff;color:var(--accent-dark)}
+.add-btn{position:absolute;right:18px;bottom:18px;width:56px;height:56px;border-radius:14px;background:var(--accent);color:white;border:none;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);cursor:pointer}
+.add-btn span{display:inline-block;transform:translateY(-1px)}
+
+.even-btn{position:absolute;left:18px;bottom:18px;width:56px;height:56px;border-radius:14px;background:var(--bg-accent);color:var(--accent-dark);border:none;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px rgba(20,30,80,.06);cursor:pointer}
+.bottom{padding:18px;border-top:1px solid #f0f4ff;background:linear-gradient(180deg,transparent,rgba(63,107,255,.03))}
+.coverage{font-size:14px;color:var(--muted);margin-bottom:10px}
+.split-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:white;border:none;font-weight:700;font-size:16px;box-shadow:0 8px 24px rgba(63,107,255,.18);cursor:pointer}
+.split-btn:disabled{opacity:0.6;cursor:not-allowed;box-shadow:none}
+
+.picker{position:fixed;inset:0;background:rgba(11,18,34,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+.picker.hidden{display:none}
+.picker-card{width:100%;max-width:420px;background:var(--bg-alt);border-radius:14px;padding:24px}
+.picker-card h3{margin:0 0 12px}
+.contacts{list-style:none;padding:0;margin:0;max-height:220px;overflow:auto}
+.contacts::-webkit-scrollbar{width:8px}
+.contacts::-webkit-scrollbar-thumb{background:#dfe8ff;border-radius:8px}
+.contacts li{padding:10px;border-radius:8px;display:flex;align-items:center;gap:10px;border:1px solid #f1f5ff;margin-bottom:8px;cursor:pointer}
+.custom{display:flex;gap:8px;margin-top:12px}
+.custom input{flex:1;padding:10px;border-radius:10px;border:1px solid #e7ecff}
+.primary{background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer}
+.close{margin-top:12px;padding:8px 12px;border-radius:8px;border:none;background:#f1f5ff;cursor:pointer}
+
+@media (max-width:420px){
+  .phone-frame{width:100%;height:100vh;border-radius:0}
+  /* center popup for phone */
+  .picker{align-items:center}
+  .picker-card{margin:0 12px;width:calc(100% - 24px);max-width:none}
+  /* position the even/add buttons at bottom corners on phone */
+  .even-btn{left:14px;bottom:22px}
+  .add-btn{right:14px;bottom:22px}
+}
