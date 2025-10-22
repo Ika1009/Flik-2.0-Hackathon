@@ -11,13 +11,17 @@
 
 *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 body{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
-.phone-frame{width:380px;max-width:96vw;background:var(--bg-alt);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.phone-frame{width:380px;max-width:96vw;background:var(--bg-alt);border-radius:28px;box-shadow:0 24px 48px rgba(26,39,80,.14);border:1px solid rgba(11,18,34,.04);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.phone-frame::before{display:none}
+
+/* subtle inner side shadows so left/right match the top shadow */
+.phone-frame::after{content:'';position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;border-radius:inherit;box-shadow:inset 10px 0 16px -10px rgba(11,18,34,.06), inset -10px 0 16px -10px rgba(11,18,34,.06)}
 .top{padding:28px 20px 18px;background:linear-gradient(180deg,var(--bg-alt),var(--bg-accent));border-bottom:1px solid #eef2ff}
 .top .title{font-size:13px;color:var(--muted)}
 .top .total{font-size:28px;font-weight:700;margin-top:6px}
-.content{padding:16px;flex:1;position:relative}
-.people-list{display:flex;flex-direction:column;gap:12px}
-.person{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,var(--bg-alt),#fbfcff);box-shadow:0 6px 18px rgba(15,23,60,.06)}
+.content{padding:16px;flex:1;position:relative;display:flex;flex-direction:column;min-height:0}
+.people-list{display:flex;flex-direction:column;gap:12px;flex:1;overflow:auto;padding:0 6px 0 10px;min-height:0;-webkit-overflow-scrolling:touch}
+.person{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,var(--bg-alt),#fbfcff);box-shadow:0 6px 18px rgba(15,23,60,.06);margin:0 6px}
 .person .avatar{width:48px;height:48px;border-radius:12px;background:var(--bg-accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent-dark)}
 .person .name{flex:1;font-weight:700}
 .person .share{width:110px;padding:10px;border-radius:10px;border:1px solid #e7ecff;text-align:right}
@@ -36,14 +40,36 @@ body{background:var(--bg);color:var(--text);display:flex;align-items:center;just
 .picker.hidden{display:none}
 .picker-card{width:100%;max-width:420px;background:var(--bg-alt);border-radius:14px;padding:24px}
 .picker-card h3{margin:0 0 12px}
-.contacts{list-style:none;padding:0;margin:0;max-height:220px;overflow:auto}
+.contacts{list-style:none;padding:6px 6px 6px 12px;margin:0;max-height:220px;overflow:auto;padding-right:6px}
 .contacts::-webkit-scrollbar{width:8px}
 .contacts::-webkit-scrollbar-thumb{background:#dfe8ff;border-radius:8px}
-.contacts li{padding:10px;border-radius:8px;display:flex;align-items:center;gap:10px;border:1px solid #f1f5ff;margin-bottom:8px;cursor:pointer}
-.custom{display:flex;gap:8px;margin-top:12px}
+.contacts li{padding:10px 10px 10px 14px;border-radius:8px;display:flex;align-items:center;gap:10px;border:1px solid #f1f5ff;margin-bottom:8px;cursor:pointer}
+.contacts-hint{font-size:12px;color:var(--muted);margin-top:8px}
+.custom{display:flex;gap:8px;margin-top:12px;align-items:center}
+.custom label{min-width:84px;flex:0 0 auto;color:var(--muted);font-weight:600;white-space:nowrap}
 .custom input{flex:1;padding:10px;border-radius:10px;border:1px solid #e7ecff}
+
+/* Popup specific tweaks: keep custom input stacked and add button bottom-right inside popup */
+.picker-card .custom{flex-direction:column;align-items:stretch;gap:8px}
+.picker-card .custom label{min-width:0;white-space:normal;margin-bottom:4px}
+.picker-card .primary{align-self:flex-end}
+
 .primary{background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer}
 .close{margin-top:12px;padding:8px 12px;border-radius:8px;border:none;background:#f1f5ff;cursor:pointer}
+
+.picker-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.picker-actions .close{margin-top:0}
+.picker-actions .primary{margin-top:0}
+
+/* payment overlay */
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(11,18,34,.45);z-index:60}
+.overlay.hidden{display:none}
+.overlay-card{background:var(--bg-alt);padding:30px 34px;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:14px;min-width:300px;max-width:86vw}
+.spinner{width:80px;height:80px;border-radius:50%;border:8px solid #e8eefc;border-top-color:var(--accent);animation:spin 1s linear infinite}
+.check{display:none}
+.check svg{width:72px;height:72px;display:block}
+.overlay-text{color:var(--muted);text-align:center}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 @media (max-width:420px){
   .phone-frame{width:100%;height:100vh;border-radius:0}
@@ -53,4 +79,6 @@ body{background:var(--bg);color:var(--text);display:flex;align-items:center;just
   /* position the even/add buttons at bottom corners on phone */
   .even-btn{left:14px;bottom:22px}
   .add-btn{right:14px;bottom:22px}
+  /* make the people list scroll within the phone frame (so page doesn't scroll) */
+  .people-list{max-height:calc(100vh - 240px);overflow:auto;padding-right:10px}
 }

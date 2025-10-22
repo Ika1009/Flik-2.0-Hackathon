@@ -10,12 +10,13 @@ document.addEventListener('DOMContentLoaded', function(){
   const coverageMsg = document.getElementById('coverage-message')
   const evenBtn = document.getElementById('even-split')
 
-  // sample contacts
-  const contacts = [
-    {name:'Ana', id:'ana'},
+  // sample contacts (mutable so selected ones can be removed)
+  let contacts = [
+    {name:'Anja', id:'anja'},
+    {name:'Ilija', id:'ilija'},
+    {name:'Hanah', id:'hanah'},
     {name:'Boris', id:'boris'},
-    {name:'Cvetka', id:'cvetka'},
-  ]
+  ];
 
   function renderContacts(){
     contactsEl.innerHTML = ''
@@ -24,24 +25,30 @@ document.addEventListener('DOMContentLoaded', function(){
       li.textContent = c.name
       li.dataset.id = c.id
       li.addEventListener('click', ()=>{
+        // add the person and remove them from available contacts
         addPerson(c.name)
+        contacts = contacts.filter(x => x.id !== c.id)
+        renderContacts()
         hidePicker()
       })
       contactsEl.appendChild(li)
     })
-    // add a small hint
-    const hint = document.createElement('div')
-    hint.style.fontSize = '12px'
-    hint.style.color = '#6b7280'
-    hint.style.marginTop = '8px'
-    hint.textContent = 'Izberite kontakt ali dodajte po meri.'
-    contactsEl.parentNode.insertBefore(hint, contactsEl.nextSibling)
+    // add a small hint (only once)
+    if(!contactsEl.parentNode.querySelector('.contacts-hint')){
+      const hint = document.createElement('div')
+      hint.className = 'contacts-hint'
+      hint.textContent = 'Izberite kontakt ali dodajte po meri.'
+      contactsEl.parentNode.insertBefore(hint, contactsEl.nextSibling)
+    }
   }
 
   function showPicker(){picker.classList.remove('hidden')}
   function hidePicker(){picker.classList.add('hidden')}
 
-  addBtn.addEventListener('click', ()=>{renderContacts(); showPicker()})
+  addBtn.addEventListener('click', ()=>{renderContacts(); showPicker();
+    // give focus to contacts list so touch scrolls inside
+    setTimeout(()=>contactsEl.focus(),50)
+  })
   closePicker.addEventListener('click', hidePicker)
 
   addCustom.addEventListener('click', ()=>{
@@ -68,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const input = row.querySelector('.share')
     input.addEventListener('input', updateCoverage)
     setTimeout(()=>input.focus(),40)
+    // ensure people list scrolls to show the new person
+    setTimeout(()=>row.scrollIntoView({behavior:'smooth',block:'end'}),80)
   }
 
   function getTotalAmount(){
@@ -80,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const shares = Array.from(document.querySelectorAll('.person .share')).map(i=>parseFloat(i.value)||0)
     const sum = shares.reduce((s,v)=>s+v,0)
     const total = getTotalAmount()
-    const diff = (sum - total)
-    if(sum >= total && total > 0){
+    const diff = +(sum - total).toFixed(2)
+    if((diff >= 0 && Math.abs(diff) < 0.005) || (sum >= total && total > 0)){
       coverageMsg.textContent = 'Račun je v celoti pokrit.'
       splitBtn.disabled = false
     } else {
@@ -95,16 +104,26 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.person .share').forEach(i=>i.addEventListener('input', updateCoverage))
   updateCoverage()
 
-  // even split: distribute total equally among all person rows
+  // even split: distribute total equally among all person rows, rounding up per-person
   evenBtn.addEventListener('click', ()=>{
     const total = getTotalAmount()
     const rows = Array.from(document.querySelectorAll('.person'))
-    if(rows.length === 0) return
-    const per = +(total / rows.length).toFixed(2)
-    // set each input
-    rows.forEach(r=>{
+    const n = rows.length
+    if(n === 0) return
+    const raw = total / n
+    // round up to nearest cent
+    const perCeil = Math.ceil(raw * 100) / 100
+    rows.forEach((r,i)=>{
       const inp = r.querySelector('.share')
-      if(inp) inp.value = per
+      if(!inp) return
+      if(i < n - 1){
+        inp.value = perCeil.toFixed(2)
+      } else {
+        // last person gets the remainder so the sum equals total
+        const sumPrev = perCeil * (n - 1)
+        const lastVal = +(total - sumPrev).toFixed(2)
+        inp.value = (lastVal > 0 ? lastVal.toFixed(2) : perCeil.toFixed(2))
+      }
     })
     updateCoverage()
   })
@@ -114,11 +133,28 @@ document.addEventListener('DOMContentLoaded', function(){
     const shares = Array.from(document.querySelectorAll('.person .share')).map(i=>parseFloat(i.value)||0)
     const sum = shares.reduce((s,v)=>s+v,0)
     const total = getTotalAmount()
-    if(sum < total){
+    // allow small rounding deltas
+    if(sum + 0.001 < total){
       alert('Račun ni v celoti pokrit — dopolnite zneske.')
       return
     }
-    // For now show confirmation; in real app this would POST to server
-    alert('Plačilo pripravljeno — skupni znesek: $' + total.toFixed(2))
+    // show payment overlay with spinner, then a check
+    const overlay = document.getElementById('payment-overlay')
+    const spinner = document.getElementById('payment-spinner')
+    const check = document.getElementById('payment-check')
+    const text = document.getElementById('payment-text')
+    overlay.classList.remove('hidden')
+    check.style.display = 'none'
+    spinner.style.display = ''
+    text.textContent = 'Procesiranje plačila...'
+    // simulate async payment: longer spinner, then show check for a bit
+    setTimeout(()=>{
+      spinner.style.display = 'none'
+      // show the check SVG
+      check.style.display = 'block'
+      text.textContent = 'Plačilo uspešno'
+      // hide after a longer delay so user sees success
+      setTimeout(()=>overlay.classList.add('hidden'),2000)
+    },2000)
   })
 })

@@ -45,9 +45,26 @@
       <div class="custom">
         <label>Po meri:</label>
         <input id="custom-input" placeholder="Telefon ali e-pošta" />
+      </div>
+      <div class="picker-actions">
+        <button id="close-picker" class="close">Zapri</button>
         <button id="add-custom" class="primary">Dodaj</button>
       </div>
-      <button id="close-picker" class="close">Zapri</button>
+    </div>
+  </div>
+
+  <!-- payment overlay -->
+  <div id="payment-overlay" class="overlay hidden" aria-hidden="true">
+    <div class="overlay-card">
+      <div class="spinner" id="payment-spinner" aria-hidden="false"></div>
+      <div class="check" id="payment-check" aria-hidden="true">
+        <!-- inline SVG checkmark for consistent rendering -->
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="#eef4ff"/>
+          <path d="M6.5 12.5l3 3 7-8" stroke="#2d4ed7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="overlay-text" id="payment-text">Procesiranje plačila...</div>
     </div>
   </div>
 
